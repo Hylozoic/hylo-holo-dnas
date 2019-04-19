@@ -87,12 +87,12 @@ graphql_object!(Post: Context |&self| {
 	    })
 	}
 
-	field createdAt() -> String {
-		"2019-01-14T07:52:22+0000".into()
+	field createdAt() -> FieldResult<String> {
+		Ok(self.retrieve_entry()?.timestamp)
 	}
 
-	field updatedAt() -> String {
-		"2019-01-14T07:52:22+0000".into()
+	field updatedAt() -> FieldResult<String> {
+		Ok(self.retrieve_entry()?.timestamp)
 	}
 });
 
