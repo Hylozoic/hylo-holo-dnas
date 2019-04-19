@@ -38,6 +38,8 @@ type Post {
   updatedAt: String
   creator: Person
   comments(first: Int, cursor: ID, order: String): CommentQuerySet
+  commenters(first: Int): [Person]
+  commentersTotal: Int
 }
 
 type CommentQuerySet {

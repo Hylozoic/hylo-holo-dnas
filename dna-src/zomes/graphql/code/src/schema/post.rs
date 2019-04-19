@@ -94,6 +94,33 @@ graphql_object!(Post: Context |&self| {
 	field updatedAt() -> String {
 		"2019-01-14T07:52:22+0000".into()
 	}
+
+	field commenters() -> FieldResult<Vec<Option<Person>>> {
+
+		let result = call_cached("comments", "get_comments",
+			json!({
+				"base": self.id.to_string()
+			}).into()
+		)?;
+
+		let comment_ids: Vec<serde_json::Value> = result.as_array()
+			.ok_or(FieldError::new(
+				format!("Could not parse get comments response: {}", result),
+				graphql_value!({ "internal_error": "Could not parse" })
+				))?
+			.to_vec();
+
+		let comments: Vec<Comment> = comment_ids.into_iter().map(|id| Comment{
+			id: id.as_str().unwrap().to_string().into(),
+		}).collect();
+
+
+		Ok(comments.iter().map(|comment| Some(comment.creator())).collect())
+	}
+
+	field commentersTotal() -> String {
+		"5".into()
+	}
 });
 
 
