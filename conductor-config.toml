@@ -6,6 +6,7 @@ keystore_file = "./agent1.keystore"
 
 [[dnas]]
 id = "chat_dna"
+# file = "./dna/hylo-holo-dnas.dna.json"
 file = "./dna/hylo.dna.json"
 hash = "Qm328wyq38924y"
 
@@ -52,15 +53,16 @@ id = "hylo-chat"
 
 # [logger]
 # type="debug"
-# [[logger.rules.rules]]
+# [[logger.rules.rules]] wss://10.1.1.202:65474/?a=HcSCJ8wROUigcybziw4vdHg7YE…
 # exclude=true
 # pattern=".*"
 
-# [network]
-# n3h_path = "/path/to/n3h"
-# n3h_persistence_path = "/tmp"
-# bootstrap_nodes = []
-# n3h_log_level = "t"
+[network]
+n3h_persistence_path = "/tmp"
+bootstrap_nodes = [
+  "wss://holo-dna.hylo.com:38474/?a=HcSci3mbfjh4nqtj7rQArggU7Ijrv6dbqT9fwpTmUQsthb84DQDPgTvayg6iuti"
+]
+n3h_log_level = "t"
 
 #===================================================================
 # Extra Agents for network testing
