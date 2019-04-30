@@ -70,7 +70,7 @@ n3h_log_level = "t"
 
 # [logger]
 # type="debug"
-# [[logger.rules.rules]] wss://10.1.1.202:65474/?a=HcSCJ8wROUigcybziw4vdHg7YE…
+# [[logger.rules.rules]]
 # exclude=true
 # pattern=".*"
 
