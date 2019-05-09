@@ -24,7 +24,7 @@ path = "tmp-storage"
 id = "websocket_interface"
 [interfaces.driver]
 type = "websocket"
-port = 3401
+port = 3400
 [[interfaces.instances]]
 id = "hylo-chat"
 
