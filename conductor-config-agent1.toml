@@ -17,14 +17,14 @@ agent = "test_agent1"
 type = "simple"
 file = "app_spec.log"
 [instances.storage]
-type = "memory"
+type = "pickle"
 path = "tmp-storage"
 
 [[interfaces]]
 id = "websocket_interface"
 [interfaces.driver]
 type = "websocket"
-port = 3401
+port = 3400
 [[interfaces.instances]]
 id = "hylo-chat"
 
@@ -49,6 +49,16 @@ id = "ui-interface"
 bundle = "main"
 port = 5001
 dna_interface = "GraphiQl-http-interface"
+
+[[ui_bundles]]
+id = "hylo-ui"
+root_dir = "./hylo-ui"
+hash = "Qm000"
+
+[[ui_interfaces]]
+id = "hylo-interface"
+bundle = "hylo-ui"
+port = 8000
 
 # [logger]
 # type="debug"
