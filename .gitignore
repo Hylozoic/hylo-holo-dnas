@@ -12,6 +12,7 @@ dna
 tmp-storage
 target
 dist
+release
 
 # misc
 .DS_Store
@@ -25,3 +26,4 @@ yarn-error.log
 .idea
 Cargo.lock
 package-lock.json
+conductor-config.toml
