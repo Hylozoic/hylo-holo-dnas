@@ -32,15 +32,16 @@ id = "hylo-chat"
 
 # # -- Hylo UI
 
-# [[ui_bundles]]
-# id = "hylo-ui"
-# root_dir = "./hylo-ui"
-# hash = "Qm000"
+[[ui_bundles]]
+id = "hylo-ui"
+root_dir = "./hylo-ui"
+hash = "Qm000"
 
-# [[ui_interfaces]]
-# id = "hylo-interface"
-# bundle = "hylo-ui"
-# port = 8000
+[[ui_interfaces]]
+id = "hylo-interface"
+bundle = "hylo-ui"
+port = 8000
+dna_interface = "websocket_interface"
 
 # -- GraphiQl HTTP interface and UI
 
