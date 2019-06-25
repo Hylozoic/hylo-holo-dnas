@@ -14,6 +14,7 @@ use hdk::{
         entry::Entry,
         error::HolochainError,
         json::JsonString,
+        link::LinkMatch
     },
     AGENT_ADDRESS,
 };
@@ -44,7 +45,7 @@ pub struct PersonWithAddress {
 }
 
 pub fn get(agent_id: Address) -> ZomeApiResult<PersonWithAddress> {
-    let person = utils::get_links_and_load_type::<Person>(&agent_id, Some(ANCHOR_PERSON_LINK_TYPE.to_string()), None)?
+    let person = utils::get_links_and_load_type::<Person>(&agent_id, LinkMatch::Exactly(ANCHOR_PERSON_LINK_TYPE), LinkMatch::Any)?
         .first()
         .map(|result| result.to_owned());
 
@@ -67,17 +68,30 @@ pub fn is_registered() -> ZomeApiResult<bool> {
 }
 
 pub fn register_user(name: String, avatar_url: String) -> ZomeApiResult<PersonWithAddress> {
+    // hdk::debug(format!("{:?}", variables))?;
+    hdk::debug("*** 1")?;
+
     let person = Person { 
         name: name.clone(), 
         avatar_url: avatar_url.clone()
     };
+
+    // hdk::debug(format!("*** 2 - person {:?}", person.to_string().into()))?;
+    hdk::debug("*** 2")?;
 
     let person_entry = Entry::App(
         PERSON_ENTRY_TYPE.into(), 
         person.clone().into()
     );
 
+    // hdk::debug(format!("*** 3 - person_entry {:?}", person_entry.to_string().into()))?;
+    hdk::debug("*** 3")?;
+
     let person_addr = hdk::commit_entry(&person_entry)?;
+
+    hdk::debug(format!("*** 4 - person_addr {:?}", person_addr.to_string()))?;
+    //  hdk::debug("*** 4")?;
+
     hdk::link_entries(&AGENT_ADDRESS, &person_addr, ANCHOR_PERSON_LINK_TYPE, "")?;
 
     let anchor_entry = Entry::App(
@@ -87,8 +101,18 @@ pub fn register_user(name: String, avatar_url: String) -> ZomeApiResult<PersonWi
         }
         .into(),
     );
+
+    // hdk::debug(format!("*** 5 - anchor_entry {:?}", anchor_entry.to_string().into()))?;
+    hdk::debug("*** 5")?;
+
     let anchor_addr = hdk::commit_entry(&anchor_entry)?;
     hdk::link_entries(&anchor_addr, &AGENT_ADDRESS, ANCHOR_PERSON_LINK_TYPE, "")?;
+
+    hdk::debug(format!("*** 6 - anchor_addr {:?}", anchor_addr.to_string()))?;
+    // hdk::debug("*** 6")?;
+ 
+    // hdk::debug(format!("*** 7 - person.with_address {:?}", person.clone().with_address(AGENT_ADDRESS.to_string().into()).to_string()()))?;
+    hdk::debug("*** 7")?;
 
     Ok(person.with_address(AGENT_ADDRESS.to_string().into()))
 }
@@ -101,7 +125,7 @@ pub fn all() -> ZomeApiResult<Vec<PersonWithAddress>> {
         }
         .into(),
     );
-    Ok(hdk::get_links(&anchor_entry.address(), Some(ANCHOR_PERSON_LINK_TYPE.to_string()), None)?
+    Ok(hdk::get_links(&anchor_entry.address(), LinkMatch::Exactly(ANCHOR_PERSON_LINK_TYPE), LinkMatch::Any)?
         .addresses()
         .iter()
         .map(|address| get(address.to_string().into()).unwrap())

@@ -22,6 +22,7 @@ use hdk::holochain_core_types::{
     error::HolochainError,
     json::JsonString,
     json::RawString,
+    link::LinkMatch
 };
 
 // tag for links from base to comment
@@ -104,7 +105,7 @@ pub fn get(address: Address) -> ZomeApiResult<CommentWithAddress> {
 
 pub fn all_for_base(base: String) -> ZomeApiResult<Vec<CommentWithAddress>> {
     let address = hdk::entry_address(&Entry::App(BASE_ENTRY_TYPE.into(), RawString::from(base).into()))?;
-    Ok(hdk::get_links(&address, Some(COMMENT_LINK_TYPE.into()), None)?
+    Ok(hdk::get_links(&address, LinkMatch::Exactly(COMMENT_LINK_TYPE), LinkMatch::Any)?
         .addresses()
         .iter()
         .map(|address| get(address.to_string().into()).unwrap())

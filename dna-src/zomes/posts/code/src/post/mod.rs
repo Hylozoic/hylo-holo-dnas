@@ -11,6 +11,7 @@ use hdk::{
         json::RawString,
         cas::content::Address,
         entry::Entry,
+        link::LinkMatch
     },
 };
 
@@ -101,7 +102,7 @@ pub fn create(base: String, title: String, details: String, post_type: String, a
 
 pub fn all_for_base(base: String) -> ZomeApiResult<Vec<PostWithAddress>> {
     let address = hdk::entry_address(&Entry::App(POST_BASE_ENTRY.into(), RawString::from(base).into()))?;
-    Ok(hdk::get_links(&address, Some(POST_LINK_TYPE.into()), None)?
+    Ok(hdk::get_links(&address, LinkMatch::Exactly(POST_LINK_TYPE), LinkMatch::Any)?
         .addresses()
         .iter()
         .map(|address| get(address.to_string().into()).unwrap())

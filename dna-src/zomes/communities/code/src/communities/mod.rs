@@ -10,6 +10,7 @@ use hdk::{
         json::RawString,
         cas::content::{Address},
         entry::Entry,
+        link::LinkMatch
     },
 };
 
@@ -51,7 +52,7 @@ pub fn get(address: Address) -> ZomeApiResult<CommunityWithAddress> {
 
 pub fn get_by_slug(slug: String) -> ZomeApiResult<CommunityWithAddress> {
     let slug_address = hdk::entry_address(&Entry::App(COMMUNITY_BASE_ENTRY.into(), RawString::from(slug).into()))?;
-    let all_communities = hdk::get_links(&slug_address, Some(COMMUNITY_LINK_TYPE.into()), None)?.addresses().clone();
+    let all_communities = hdk::get_links(&slug_address, LinkMatch::Exactly(COMMUNITY_LINK_TYPE.into()), LinkMatch::Any)?.addresses().clone();
     let community_address = all_communities.to_owned().into_iter().next().ok_or(ZomeApiError::Internal("No communities for this slug".into())).unwrap();
     get(community_address)
 }
@@ -94,7 +95,7 @@ pub fn create(name: String, slug: String) -> ZomeApiResult<CommunityWithAddress>
 
 pub fn all() -> ZomeApiResult<Vec<CommunityWithAddress>> {
     let address = hdk::entry_address(&Entry::App(COMMUNITY_BASE_ENTRY.into(), RawString::from(COMMUNITY_BASE_ENTRY).into()))?;
-    Ok(hdk::get_links(&address, Some(COMMUNITY_LINK_TYPE.into()), None)?
+    Ok(hdk::get_links(&address, LinkMatch::Exactly(COMMUNITY_LINK_TYPE), LinkMatch::Any)?
         .addresses()
         .iter()
         .map(|address| get(address.to_string().into()).unwrap())
