@@ -1,6 +1,6 @@
-module.exports = (scenario) => {
+module.exports = scenario => {
 
-scenario.runTape('Check for a non existent thread and then create it', async (t, {alice}) => {
+scenario('Check for a non existent thread and then create it', async (s, t, {alice}) => {
     
     // add a thread
     const add_result_str = await alice.callSync("messages", "create_thread", {
