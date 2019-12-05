@@ -14,10 +14,6 @@ target
 dist
 release
 
-# ui builds
-hylo-ui
-graphiql-ui/build
-
 # misc
 .DS_Store
 npm-debug.log
@@ -28,9 +24,8 @@ npm-debug.log
 
 yarn-error.log
 .idea
-Cargo.lock
-package-lock.json
 dmg-mount
 conductor-config.toml
 keystores/myagent.keystore
 .cargo
+holochain-rust
